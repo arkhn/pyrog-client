@@ -200,6 +200,20 @@ export interface BatchResponse {
   data: Record<string, Batch>;
   error: string | null;
 }
+
+export interface DagConf {
+  dag_id: string;
+  mapping_id: string;
+  source_name: string;
+  resources: BatchResource[];
+  schedule_interval: string;
+}
+
+export interface DagResponse {
+  data: Record<string, DagConf>;
+  error: string | null;
+}
+
 export interface ScriptsResponse {
   data: Script[];
   error: string | null;
@@ -222,6 +236,7 @@ export interface IReduxStore {
   fhir: IFhir;
   exploredTable: ExploredTable;
   batchList: BatchResponse;
+  recurringBatchList: DagResponse;
   scriptList: ScriptsResponse;
   selectedNode: ISelectedNode;
   resourceAttributes: any;

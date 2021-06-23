@@ -13,6 +13,7 @@ interface ISelectProps {
   inputItem: string;
   intent?: Intent;
   items: string[];
+  doSort?: boolean;
   maxItems?: number;
   loading?: boolean;
   filterable?: boolean;
@@ -54,12 +55,16 @@ export default class StringSelect extends React.Component<ISelectProps, any> {
       icon,
       inputItem,
       intent,
-      items,
       loading,
       onChange,
       filterable,
       popoverProps
     } = this.props;
+
+    const doSort = (this.props.doSort === undefined || this.props.doSort === true);
+    const items = this.props.items ? (
+      doSort ? this.sortItems(this.props.items) : this.props.items
+    ) : []
 
     return (
       <TSelect<string>
@@ -71,7 +76,7 @@ export default class StringSelect extends React.Component<ISelectProps, any> {
         icon={icon}
         inputItem={inputItem}
         intent={intent}
-        items={items ? this.sortItems(items) : []}
+        items={items}
         onChange={onChange}
         renderItem={this.renderItem}
         popoverProps={popoverProps}

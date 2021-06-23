@@ -31,6 +31,7 @@ import { logout as logoutAction } from 'services/user/actions';
 import fhirReducer from './services/fhir';
 import exploredTableReducer from './services/exploredTable/reducer';
 import batchListReducer from './services/batchList/reducer';
+import recurringBatchListReducer from './services/recurringBatchList/reducer';
 import scriptListReducer from './services/scripts/reducer';
 import recommendedColumns from './services/recommendedColumns/reducer';
 import selectedNodeReducer from './services/selectedNode/reducer';
@@ -76,6 +77,7 @@ const mainReducer = combineReducers({
   exploredTable: exploredTableReducer,
   fhir: fhirReducer,
   batchList: batchListReducer,
+  recurringBatchList: recurringBatchListReducer,
   scriptList: scriptListReducer,
   selectedNode: selectedNodeReducer,
   resourceAttributes: resourceAttributesReducer,
@@ -105,8 +107,10 @@ const redirectToLogin = () => {
 // Set axios interceptor
 axios.interceptors.request.use(config => {
   if (
-    !config.headers.Authorization ||
-    !config.headers.Authorization.startsWith('Bearer')
+    !config.auth && !(
+      config.headers.Authorization &&
+      config.headers.Authorization.startsWith('Bearer')
+    )
   ) {
     const accessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY);
     config.headers.Authorization = `Bearer ${accessToken}`;
